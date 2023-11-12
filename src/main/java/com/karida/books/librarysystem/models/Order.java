@@ -42,4 +42,8 @@ public class Order {
     @Column(name = "status_c")
     private Integer status_c;
 
+    public Order(Integer id) {
+        super();
+        id_order = id;
+    }
 }
