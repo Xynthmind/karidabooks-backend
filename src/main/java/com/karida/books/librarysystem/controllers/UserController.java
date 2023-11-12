@@ -14,7 +14,7 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-    private Object[] userDataToVerification = new Object[2];
+    private Object[] userDataToDoVerification = new Object[2];
     //Get all records
     @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<Object> getUsers(){
@@ -32,9 +32,9 @@ public class UserController {
     @RequestMapping(value="/{email}/{password}", method = RequestMethod.GET)
     public ResponseEntity<String> verifyUserExistenceAtLogin(@PathVariable String email, @PathVariable String password){
         try{
-            userDataToVerification = verifyUserExistenceInDB(email);
-            if((boolean) userDataToVerification[0]){
-                User user = (User) userDataToVerification[1];
+            userDataToDoVerification = verifyUserExistenceInDB(email);
+            if((boolean) userDataToDoVerification[0]){
+                User user = (User) userDataToDoVerification[1];
                 if(verifyPasswordMatch(password, user.getPassword())){
                     return new ResponseEntity<>("User's password match", HttpStatus.OK);
                 }else{
@@ -71,8 +71,8 @@ public class UserController {
     public ResponseEntity<String> insertUser(@RequestBody  User newUser){
         try{
             String email = newUser.getEmail();
-            userDataToVerification = verifyUserExistenceInDB(email);
-            if((boolean) userDataToVerification[0]){
+            userDataToDoVerification = verifyUserExistenceInDB(email);
+            if((boolean) userDataToDoVerification[0]){
                 return new ResponseEntity<>("User already exist", HttpStatus.CONFLICT);
             }else{
                 userRepository.save(newUser);
@@ -87,8 +87,8 @@ public class UserController {
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User userRequest){
         try{
             User user = userRepository.findById(id).orElseThrow();
-            userDataToVerification = verifyUserExistenceInDB(userRequest.getEmail(), id);
-            if((boolean) userDataToVerification[0]){
+            userDataToDoVerification = verifyUserExistenceInDB(userRequest.getEmail(), id);
+            if((boolean) userDataToDoVerification[0]){
                 return new ResponseEntity<>("Email already exist", HttpStatus.CONFLICT);
             }else{
                 return putOperation(user, userRequest, 1);
@@ -100,7 +100,7 @@ public class UserController {
     }
     public Object[] verifyUserExistenceInDB(@PathVariable String email, @PathVariable Long id_user){
         Object[] userDataTemp = new Object[2];
-        User user = userRepository.findTheEmailInOtherUsers(email, id_user);
+        User user = userRepository.findTheEmailInOtherUser(email, id_user);
             if (user != null){
                 userDataTemp[0] = true;
                 userDataTemp[1] = user;

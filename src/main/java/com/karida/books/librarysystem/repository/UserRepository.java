@@ -9,5 +9,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query(value = "SELECT * FROM users WHERE email = ?1", nativeQuery = true)
     User findByEmail(String email);
     @Query(value = "SELECT * FROM users WHERE email = ?1 AND id_user != ?2", nativeQuery = true)
-    User findTheEmailInOtherUsers(String email, Long id_user);
+    User findTheEmailInOtherUser(String email, Long id_user);
 }
