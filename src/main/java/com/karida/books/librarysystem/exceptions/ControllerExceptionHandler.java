@@ -2,6 +2,7 @@ package com.karida.books.librarysystem.exceptions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.hibernate.exception.SQLGrammarException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +25,8 @@ public class ControllerExceptionHandler {
     public ResponseEntity<Object> handleInvalidSQL(SQLGrammarException  ex){
         return new ResponseEntity<>("Invalid request sql"+ ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Object> handleInvalidSQL(HttpMessageNotReadableException  ex){
+        return new ResponseEntity<>("JSON body is empty", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
