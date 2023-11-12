@@ -29,4 +29,9 @@ public class Address {
     private String zc;
     @Column(name = "delivery_instructions")
     private String delivery_instructions;
+
+    public Address(Integer id) {
+        super();
+        id_address = id;
+    }
 }
