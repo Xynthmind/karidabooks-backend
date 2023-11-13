@@ -61,11 +61,7 @@ public class UserController {
         return userDataTemp;
     }
     public boolean verifyPasswordMatch(@PathVariable String password, @PathVariable String passwordToCheck){
-        if (password.equals(passwordToCheck)){
-            return true;
-        }else{
-            return false;
-        }
+        return password.equals(passwordToCheck);
     }
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> insertUser(@RequestBody  User newUser){

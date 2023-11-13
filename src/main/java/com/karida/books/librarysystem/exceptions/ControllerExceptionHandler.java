@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(JsonProcessingException.class)
-    public ResponseEntity<Object> handleInvalidJson(JsonProcessingException ex) {
+    public ResponseEntity<Object> handleInvalidJson() {
         return new ResponseEntity<>("Invalid JSON", HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<Object> handleInvalidMethod(HttpRequestMethodNotSupportedException  ex){
+    public ResponseEntity<Object> handleInvalidMethod(){
         return new ResponseEntity<>("Invalid request method", HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(SQLGrammarException.class)
@@ -26,7 +26,7 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>("Invalid request sql"+ ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Object> handleInvalidSQL(HttpMessageNotReadableException  ex){
+    public ResponseEntity<Object> handleInvalidSQL(){
         return new ResponseEntity<>("JSON body is empty", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
