@@ -39,4 +39,9 @@ public class Book {
     private Integer stock;
     @Column(name = "status_c")
     private Integer status_c;
+
+    public Book(Integer id) {
+        super();
+        id_book = id;
+    }
 }

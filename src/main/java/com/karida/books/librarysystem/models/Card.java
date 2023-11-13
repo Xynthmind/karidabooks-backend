@@ -35,4 +35,9 @@ public class Card {
     private String street;
     @Column(name = "zc")
     private String zc;
+
+    public Card(Integer id) {
+        super();
+        id_card = id;
+    }
 }
