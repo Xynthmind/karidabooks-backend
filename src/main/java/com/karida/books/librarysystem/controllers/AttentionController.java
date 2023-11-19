@@ -30,7 +30,7 @@ public class AttentionController {
         }
     }
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> insertAddress(@RequestBody Attention attention){
+    public ResponseEntity<String> insertAttention(@RequestBody Attention attention){
         try{
             attentionRepository.save(attention);
             return new ResponseEntity<>("Insert successful", HttpStatus.OK);
@@ -40,7 +40,7 @@ public class AttentionController {
         }
     }
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<String> updateAddress(@PathVariable Long id, @RequestBody Attention newattention){
+    public ResponseEntity<String> updateAttention(@PathVariable Long id, @RequestBody Attention newattention){
         try{
             Attention attention = attentionRepository.findById(id).orElseThrow();
             attention.setId_user(newattention.getId_user());

@@ -51,7 +51,7 @@ public class OrderDetailsController {
         }
     }
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> insertOrderDetails(@RequestBody List<OrderDetails> neworderDetails ) {
+    public ResponseEntity<String> insertOrderDetails(@RequestBody List<OrderDetails> neworderDetails) {
         try{
                 orderDetailsRepository.saveAll(neworderDetails);
                 return new ResponseEntity<>("Insert successful", HttpStatus.OK);
