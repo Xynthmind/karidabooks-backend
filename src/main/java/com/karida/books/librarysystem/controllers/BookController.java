@@ -51,6 +51,20 @@ public class BookController {
                     "We apologize for the inconvenience.", HttpStatus.EXPECTATION_FAILED);
         }
     }
+    @RequestMapping(value = "/cat/{id_category}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getBookByCategory(@PathVariable Long id_category) {
+        try{
+            List <Book> book = bookRepository.finByCategory(id_category);
+            if (book != null) {
+                return new ResponseEntity<>(book, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("There are nothing in DB", HttpStatus.CONFLICT);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("An unexpected error has occurred. " +
+                    "We apologize for the inconvenience.", HttpStatus.EXPECTATION_FAILED);
+        }
+    }
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> insertCard(@RequestBody Book newbook) {
         try{
