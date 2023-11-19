@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/library/users")
 public class UserController {
     @Autowired
@@ -30,13 +31,13 @@ public class UserController {
         }
     }
     @RequestMapping(value="/{email}/{password}", method = RequestMethod.GET)
-    public ResponseEntity<String> verifyUserExistenceAtLogin(@PathVariable String email, @PathVariable String password){
+    public ResponseEntity<Object> verifyUserExistenceAtLogin(@PathVariable String email, @PathVariable String password){
         try{
             userDataToDoVerification = verifyUserExistenceInDB(email);
             if((boolean) userDataToDoVerification[0]){
                 User user = (User) userDataToDoVerification[1];
                 if(verifyPasswordMatch(password, user.getPassword())){
-                    return new ResponseEntity<>("User's password match", HttpStatus.OK);
+                    return new ResponseEntity<>(user, HttpStatus.OK);
                 }else{
                     return new ResponseEntity<>("User's password does not match", HttpStatus.CONFLICT);
                 }

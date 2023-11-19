@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/library/books")
 public class BookController {
     @Autowired
@@ -40,6 +41,20 @@ public class BookController {
     public ResponseEntity<Object> getBookByISBN(@PathVariable String isbn) {
         try{
             Book book = bookRepository.finByISBN(isbn);
+            if (book != null) {
+                return new ResponseEntity<>(book, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("There are nothing in DB", HttpStatus.CONFLICT);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("An unexpected error has occurred. " +
+                    "We apologize for the inconvenience.", HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+    @RequestMapping(value = "/cat/{id_category}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getBookByCategory(@PathVariable Long id_category) {
+        try{
+            List <Book> book = bookRepository.finByCategory(id_category);
             if (book != null) {
                 return new ResponseEntity<>(book, HttpStatus.OK);
             } else {
