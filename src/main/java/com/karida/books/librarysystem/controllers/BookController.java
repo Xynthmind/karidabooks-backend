@@ -26,7 +26,6 @@ public class BookController {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getBookById(@PathVariable Long id) {
         try{
