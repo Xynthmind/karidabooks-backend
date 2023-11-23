@@ -30,9 +30,21 @@ public class RolController {
             return new ResponseEntity<>("An unexpected error has occurred. We apologize for the inconvenience.", HttpStatus.EXPECTATION_FAILED);
         }
     }
+
+    //Get by ID
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getRolById(@PathVariable Long id){
+        try{
+            Rol rol = rolRepository.findById(id).orElseThrow();
+            return ResponseEntity.ok(rol);
+        }catch (Exception e){
+            return new ResponseEntity<>("An unexpected error has occurred. We apologize for the inconvenience. " +
+                    "Is possible than the rol does not exist", HttpStatus.EXPECTATION_FAILED);
+        }
+    }
     //Insert a new record
     @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<String> saveRol(@RequestBody Rol rol){
+    public ResponseEntity<String> insertRol(@RequestBody Rol rol){
         try{
             checkName = checkRolDuplicatedByName(rol.getRol_name());
             if (checkName){
@@ -59,17 +71,6 @@ public class RolController {
         Rol rol = rolRepository.findByNumber(rol_number);
         System.out.println(rol);
         return rol != null;
-    }
-    //Get by ID
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> getRolById(@PathVariable Long id){
-        try{
-            Rol rol = rolRepository.findById(id).orElseThrow();
-            return ResponseEntity.ok(rol);
-        }catch (Exception e){
-            return new ResponseEntity<>("An unexpected error has occurred. We apologize for the inconvenience. " +
-                    "Is possible than the rol does not exist", HttpStatus.EXPECTATION_FAILED);
-        }
     }
     //Update
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

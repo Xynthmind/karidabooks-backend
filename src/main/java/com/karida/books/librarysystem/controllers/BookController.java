@@ -14,21 +14,21 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Object> getBooks(){
+    public ResponseEntity<List<Book>> getBooks(){
         try{
             List<Book> book= bookRepository.findAll();
             if (book.isEmpty()){
-                return new ResponseEntity<>("There are nothing in DB", HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
             }else{
                 return new ResponseEntity<>(book, HttpStatus.OK);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("An unexpected error has occurred. We apologize for the inconvenience. ", HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> getCardById(@PathVariable Long id) {
+    public ResponseEntity<Object> getBookById(@PathVariable Long id) {
         try{
             Book book = bookRepository.findById(id).orElseThrow();
             return ResponseEntity.ok(book);
@@ -66,7 +66,7 @@ public class BookController {
         }
     }
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> insertCard(@RequestBody Book newbook) {
+    public ResponseEntity<String> insertBook(@RequestBody Book newbook) {
         try{
             String isbn = newbook.getIsbn();
             if (verificationIfBookExistByISBN(isbn)) {

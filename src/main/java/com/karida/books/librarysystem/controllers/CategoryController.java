@@ -28,7 +28,7 @@ public class CategoryController {
         }
     }
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> insertAddress(@RequestBody Category category){
+    public ResponseEntity<String> insertCategory(@RequestBody Category category){
         try{
             categoryRepository.save(category);
             return new ResponseEntity<>("Insert successful", HttpStatus.OK);
