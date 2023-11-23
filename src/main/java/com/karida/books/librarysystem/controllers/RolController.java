@@ -16,7 +16,6 @@ public class RolController {
     @Autowired
     private RolRepository rolRepository;
 
-    //Get all records
     @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<Object> getRoles(){
         try{
@@ -30,8 +29,6 @@ public class RolController {
             return new ResponseEntity<>("An unexpected error has occurred. We apologize for the inconvenience.", HttpStatus.EXPECTATION_FAILED);
         }
     }
-
-    //Get by ID
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getRolById(@PathVariable Long id){
         try{
@@ -42,7 +39,6 @@ public class RolController {
                     "Is possible than the rol does not exist", HttpStatus.EXPECTATION_FAILED);
         }
     }
-    //Insert a new record
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<String> insertRol(@RequestBody Rol rol){
         try{
@@ -72,7 +68,6 @@ public class RolController {
         System.out.println(rol);
         return rol != null;
     }
-    //Update
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<String> updateRol(@PathVariable Long id, @RequestBody Rol rolRequest){
         try{
