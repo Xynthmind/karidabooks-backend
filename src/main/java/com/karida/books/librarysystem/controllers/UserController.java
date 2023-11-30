@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.karida.books.librarysystem.Security;
 import java.util.List;
 
 @RestController
@@ -15,6 +15,7 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+    private final Security pass = new Security();
     private Object[] userDataToDoVerification = new Object[2];
     //Get all records
     @RequestMapping(method=RequestMethod.GET)
@@ -61,8 +62,9 @@ public class UserController {
         }
         return userDataTemp;
     }
-    public boolean verifyPasswordMatch(@PathVariable String password, @PathVariable String passwordToCheck){
-        return password.equals(passwordToCheck);
+    public boolean verifyPasswordMatch(@PathVariable String passwordToCheck, @PathVariable String passwordSaved){
+        String encryptedPassword = pass.hidingData(passwordToCheck);
+        return encryptedPassword.equals(passwordSaved);
     }
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> insertUser(@RequestBody  User newUser){
@@ -72,10 +74,12 @@ public class UserController {
             if((boolean) userDataToDoVerification[0]){
                 return new ResponseEntity<>("User already exist", HttpStatus.CONFLICT);
             }else{
+                newUser.setPassword(pass.hidingData(newUser.getPassword()));
                 userRepository.save(newUser);
                 return new ResponseEntity<>("SigUp finished", HttpStatus.OK);
             }
         }catch (Exception e){
+            System.out.println(e);
             return new ResponseEntity<>("An unexpected error has occurred. We apologize for the inconvenience. " +
                     "Our team has been notified and is actively working to resolve the issue. Thank you for your patience.", HttpStatus.EXPECTATION_FAILED);
         }
@@ -125,7 +129,12 @@ public class UserController {
         user.setLast_name(userRequest.getLast_name());
         user.setPhone_number(userRequest.getPhone_number());
         user.setEmail(userRequest.getEmail());
-        user.setPassword(userRequest.getPassword());
+        if(type == 1){
+            String encryptednewpassword = pass.hidingData(userRequest.getPassword());
+            user.setPassword(encryptednewpassword);
+        }else{
+            user.setPassword(userRequest.getPassword());
+        }
         user.setStatus_c(userRequest.getStatus_c());
         userRepository.save(user);
         if(type == 1) {
