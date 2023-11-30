@@ -1,6 +1,7 @@
 package com.karida.books.librarysystem.controllers;
 
 import com.karida.books.librarysystem.models.Order;
+import com.karida.books.librarysystem.models.User;
 import com.karida.books.librarysystem.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,13 +55,15 @@ public class OrderController {
         }
     } //remember verify the error code in the front
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> insertOrder(@RequestBody Order neworder) {
+    public ResponseEntity<Order> insertOrder(@RequestBody Order neworder) {
         try{
                 orderRepository.save(neworder);
-                return new ResponseEntity<>("Insert successful", HttpStatus.OK);
+                User usuTemp = neworder.getId_user();
+                Order lstOrder = orderRepository.findTheLastOrder(usuTemp.getId_user());
+                return new ResponseEntity<>(lstOrder, HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>("An unexpected error has occurred. We apologize for the inconvenience. " +
-                    "Our team has been notified and is actively working to resolve the issue. Thank you for your patience.", HttpStatus.EXPECTATION_FAILED);
+            System.out.println("error");
+            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     }
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

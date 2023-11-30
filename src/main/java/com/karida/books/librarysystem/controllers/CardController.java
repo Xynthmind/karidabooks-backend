@@ -42,17 +42,16 @@ public class CardController {
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> getCardByIdUser(@PathVariable Long id) {
+    public ResponseEntity< List<Card>> getCardByIdUser(@PathVariable Long id) {
         try{
             List<Card> card = cardRepository.findById_User(id);
             if (card.isEmpty()) {
-                return new ResponseEntity<>("There are nothing in DB", HttpStatus.CONFLICT);
+                return new ResponseEntity<>(null, HttpStatus.CONFLICT);
             } else {
                 return new ResponseEntity<>(card, HttpStatus.OK);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("An unexpected error has occurred. " +
-                    "We apologize for the inconvenience.", HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     } //remember verify the error code in the front
 
