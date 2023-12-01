@@ -41,17 +41,16 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> getOrdersByIdUser(@PathVariable Long id) {
+    public ResponseEntity<List<Order>> getOrdersByIdUser(@PathVariable Long id) {
         try{
             List<Order> order = orderRepository.findById_User(id);
             if (order.isEmpty()) {
-                return new ResponseEntity<>("There are nothing in DB", HttpStatus.CONFLICT);
+                return new ResponseEntity<>(null, HttpStatus.CONFLICT);
             } else {
                 return new ResponseEntity<>(order, HttpStatus.OK);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("An unexpected error has occurred. " +
-                    "We apologize for the inconvenience.", HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     } //remember verify the error code in the front
     @RequestMapping(method = RequestMethod.POST)
